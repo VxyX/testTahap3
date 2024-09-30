@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS rent(
         REFERENCES table_customers(customer_id),
 	CONSTRAINT fk_movie
       FOREIGN KEY(movie_id) 
-        REFERENCES table_movies(movie_id)
+        REFERENCES table_movies(movie_id),
 	CONSTRAINT fk_address
       FOREIGN KEY(address_id) 
         REFERENCES address(address_id)
