@@ -9,9 +9,19 @@ CREATE TABLE IF NOT EXISTS table_movies(
 	movie_name TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS address(
+	address_id SERIAL PRIMARY KEY,
+	customer_id INT,
+	address CHAR(50) NOT NULL,
+	CONSTRAINT fk_customer
+      FOREIGN KEY(customer_id) 
+        REFERENCES table_customers(customer_id)
+);
+
 CREATE TABLE IF NOT EXISTS rent(
 	customer_id INT,
     movie_id INT,
+    address_id INT,
     PRIMARY KEY (customer_id, movie_id),
 	CONSTRAINT fk_customer
       FOREIGN KEY(customer_id) 
@@ -19,16 +29,12 @@ CREATE TABLE IF NOT EXISTS rent(
 	CONSTRAINT fk_movie
       FOREIGN KEY(movie_id) 
         REFERENCES table_movies(movie_id)
+	CONSTRAINT fk_address
+      FOREIGN KEY(address_id) 
+        REFERENCES address(address_id)
+
 );
 
-CREATE TABLE IF NOT EXISTS address(
-	id SERIAL PRIMARY KEY,
-	customer_id INT,
-	address CHAR(50) NOT NULL,
-	CONSTRAINT fk_customer
-      FOREIGN KEY(customer_id) 
-        REFERENCES table_customers(customer_id)
-);
 
 INSERT INTO table_customers (full_name, salutation)
 VALUES 
@@ -48,13 +54,13 @@ VALUES
 	(2,'3rd Street 34'),
 	(2,'5th Avenue');
 
-INSERT INTO rent(customer_id, movie_id)
+INSERT INTO rent(customer_id, movie_id, address_id)
 VALUES
-	(1,1),
-	(1,2),
-	(2,3),
-	(2,4),
-	(2,2);
+	(1,1,1),
+	(1,2,1),
+	(2,3,2),
+	(2,4,2),
+	(2,2,3);
 
 SELECT c.full_name, a.address, m.movie_name, c.salutation 
 	FROM table_customers c
